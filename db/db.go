@@ -107,7 +107,7 @@ func QueryTableByGSISkData(tableName string, indexName string, skKey string, sk 
 	return QueryTableByParams(params)
 }
 
-func QueryTableByGSISkDateRange(tableName string, indexName string, skKey string, sk string, dataKey string, dateStart string, , dateEnd string) ([]map[string]*dynamodb.AttributeValue, error) {
+func QueryTableByGSISkDateRange(tableName string, indexName string, skKey string, sk string, dataKey string, dateStart string, dateEnd string) ([]map[string]*dynamodb.AttributeValue, error) {
 	fmt.Println("QueryByPKSk: " + tableName + " - Key: " + skKey + " Value: " + sk + " - Data: " + dataKey + " DateStart: " + dateStart + " DateEnd: " + dateEnd)
 	params := &dynamodb.QueryInput{
 		TableName:              aws.String(tableName),
