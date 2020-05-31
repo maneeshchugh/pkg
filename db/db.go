@@ -107,6 +107,31 @@ func QueryTableByGSISkData(tableName string, indexName string, skKey string, sk 
 	return QueryTableByParams(params)
 }
 
+func QueryTableByGSISkDateRange(tableName string, indexName string, skKey string, sk string, dataKey string, dateStart string, , dateEnd string) ([]map[string]*dynamodb.AttributeValue, error) {
+	fmt.Println("QueryByPKSk: " + tableName + " - Key: " + skKey + " Value: " + sk + " - Data: " + dataKey + " DateStart: " + dateStart + " DateEnd: " + dateEnd)
+	params := &dynamodb.QueryInput{
+		TableName:              aws.String(tableName),
+		IndexName:              aws.String(indexName),
+		KeyConditionExpression: aws.String("#sk = :skValue AND #data BETWEEN :dateStartValue AND :dateEndValue"),
+		ExpressionAttributeNames: map[string]*string{
+			"#sk":   aws.String(skKey),
+			"#data": aws.String("data"),
+		},
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":skValue": {
+				S: aws.String(sk),
+			},
+			":dateStartValue": {
+				S: aws.String(dateStart),
+			},
+			":dateEndValue": {
+				S: aws.String(dateEnd),
+			},
+		},
+	}
+	return QueryTableByParams(params)
+}
+
 func PutItem(tableName string, item interface{}) error {
 	// func putItem(tableName string, pkKey string, pk string, skKey string, sk string, dataKey string, data string, item interface{}) error {
 	// input := &dynamodb.PutItemInput{
