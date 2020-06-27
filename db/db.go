@@ -16,13 +16,16 @@ const (
 
 var db = dynamodb.New(session.New(), aws.NewConfig().WithRegion(AwsRegion))
 
-func DeleteItemByPk(tableName string, pk string) error {
+func DeleteItemByPkSk(tableName string, pk string, sk string) error {
 	fmt.Println("DeleteByPK: " + tableName + " Pk: " + pk)
 
 	input := &dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"pk": {
 				S: aws.String(pk),
+			},
+			"sk": {
+				S: aws.String(sk),
 			},
 		},
 		TableName: aws.String(tableName),
