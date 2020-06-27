@@ -16,6 +16,11 @@ const (
 
 var db = dynamodb.New(session.New(), aws.NewConfig().WithRegion(AwsRegion))
 
+func DeleteItem(params *dynamodb.DeleteItemInput) error {
+	_, err := db.DeleteItem(params)
+	return err
+}
+
 func QueryTableByParams(params *dynamodb.QueryInput) ([]map[string]*dynamodb.AttributeValue, error) {
 	result, err := db.Query(params)
 
