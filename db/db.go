@@ -16,8 +16,25 @@ const (
 
 var db = dynamodb.New(session.New(), aws.NewConfig().WithRegion(AwsRegion))
 
-func DeleteItem(params *dynamodb.DeleteItemInput) error {
-	_, err := db.DeleteItem(params)
+func DeleteItemByPk(tableName string, pk string) error {
+	fmt.Println("DeleteByPK: " + tableName + " Pk: " + pk)
+
+	input := &dynamodb.DeleteItemInput{
+		Key: map[string]*dynamodb.AttributeValue{
+			"pk": {
+				S: aws.String(pk),
+			},
+		},
+		TableName: aws.String(tableName),
+	}
+
+	_, err := db.DeleteItem(input)
+	if err != nil {
+		fmt.Println("Got error calling DeleteItem")
+		fmt.Println(err.Error())
+	}
+
+	fmt.Println("Deleted pk: '" + pk + " from table " + tableName)
 	return err
 }
 
