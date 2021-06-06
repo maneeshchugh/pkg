@@ -92,6 +92,27 @@ func QueryTableByPkSk(tableName string, pkKey string, pk string, skKey string, s
 	return QueryTableByParams(params)
 }
 
+func QueryTableByPkSkEq(tableName string, pkKey string, pk string, skKey string, sk string) ([]map[string]*dynamodb.AttributeValue, error) {
+	fmt.Println("QueryByPKSk: " + tableName + " - Key: " + pkKey + " Value: " + pk + " & SK: " + skKey + " Value: " + sk)
+	params := &dynamodb.QueryInput{
+		TableName:              aws.String(tableName),
+		KeyConditionExpression: aws.String("#pk = :pkValue AND #sk =:skValue"),
+		ExpressionAttributeNames: map[string]*string{
+			"#pk": aws.String(pkKey),
+			"#sk": aws.String(skKey),
+		},
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":pkValue": {
+				S: aws.String(pk),
+			},
+			":skValue": {
+				S: aws.String(sk),
+			},
+		},
+	}
+	return QueryTableByParams(params)
+}
+
 func QueryTableByGSISk(tableName string, indexName string, skKey string, sk string) ([]map[string]*dynamodb.AttributeValue, error) {
 	fmt.Println("QueryByPKSk: " + tableName + " - Key: " + skKey + " Value: " + sk)
 	params := &dynamodb.QueryInput{
