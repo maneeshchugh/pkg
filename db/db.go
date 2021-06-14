@@ -29,7 +29,7 @@ func DeleteItemByPkSk(tableName string, pk string, sk string) error {
 			},
 		},
 		TableName: aws.String(tableName),
-		ConditionExpression: attribute_exists(pk),
+		ConditionExpression: aws.String("attribute_exists(#pk)"),
 	}
 
 	_, err := db.DeleteItem(input)
